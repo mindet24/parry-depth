@@ -15,7 +15,25 @@ class SoundEngine {
     if (typeof window === 'undefined') return;
     if (!this.ctx) {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (AudioCtx) this.ctx = new AudioCtx();
+      if (AudioCtx) {
+        this.ctx = new AudioCtx();
+        // Register a one-time unlock listener so the context resumes on the
+        // very first user gesture (click, key, touch) — required by browsers'
+        // autoplay policy (especially on deployed / cross-origin pages).
+        const unlock = () => {
+          if (this.ctx && this.ctx.state === 'suspended') {
+            this.ctx.resume();
+          }
+          window.removeEventListener('click',     unlock);
+          window.removeEventListener('keydown',   unlock);
+          window.removeEventListener('touchstart', unlock);
+          window.removeEventListener('mousedown',  unlock);
+        };
+        window.addEventListener('click',     unlock, { once: true, capture: true });
+        window.addEventListener('keydown',   unlock, { once: true, capture: true });
+        window.addEventListener('touchstart', unlock, { once: true, capture: true });
+        window.addEventListener('mousedown',  unlock, { once: true, capture: true });
+      }
     }
     if (this.ctx && this.ctx.state === 'suspended') {
       this.ctx.resume();
