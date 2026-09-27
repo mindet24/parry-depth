@@ -643,3 +643,84 @@ kbd {
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: #06040a; }
 ::-webkit-scrollbar-thumb { background: rgba(120,60,20,0.5); border-radius: 2px; }
+
+/* ── How To Play Card ────────────────────────────────────────── */
+#how-to-play {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  max-width: 700px;
+  margin: 14px auto 8px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #a09888;
+}
+
+.htp-section {
+  background: rgba(10,8,16,0.72);
+  border: 1px solid rgba(100,60,20,0.3);
+  border-radius: 4px;
+  padding: 10px 12px;
+  backdrop-filter: blur(4px);
+}
+
+.htp-heading {
+  font-family: var(--font-main);
+  font-size: 1rem;
+  color: var(--c-gold);
+  letter-spacing: 0.08em;
+  margin-bottom: 7px;
+  border-bottom: 1px solid rgba(160,80,20,0.25);
+  padding-bottom: 4px;
+}
+
+/* Controls grid: key | value */
+.htp-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 10px;
+  align-items: baseline;
+}
+.htp-key {
+  color: #c8b890;
+  background: rgba(80,50,10,0.35);
+  border: 1px solid rgba(140,90,20,0.3);
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-size: 0.65rem;
+  white-space: nowrap;
+}
+.htp-val {
+  color: #909080;
+  line-height: 1.5;
+}
+
+/* Row lists */
+.htp-rows { display: flex; flex-direction: column; gap: 5px; }
+.htp-row  { display: flex; align-items: baseline; gap: 6px; line-height: 1.4; }
+
+/* Action badges */
+.htp-badge {
+  flex-shrink: 0;
+  font-family: var(--font-main);
+  font-size: 0.85rem;
+  padding: 0 6px;
+  border-radius: 3px;
+  letter-spacing: 0.05em;
+}
+.htp-badge.dmg { background: rgba(140,30,20,0.55); color: #ffb090; border: 1px solid rgba(200,60,30,0.4); }
+.htp-badge.par { background: rgba(30,80,160,0.55); color: #90c8ff; border: 1px solid rgba(50,120,220,0.4); }
+.htp-badge.blk { background: rgba(60,60,10,0.55);  color: #d4c870; border: 1px solid rgba(160,140,20,0.4); }
+.htp-badge.dsh { background: rgba(30,100,60,0.55); color: #80e0a0; border: 1px solid rgba(40,160,80,0.4); }
+
+/* Stack the two right-side sections vertically inside one column */
+#how-to-play > .htp-section:nth-child(3),
+#how-to-play > .htp-section:nth-child(4) {
+  grid-column: 2;
+}
+#how-to-play > .htp-section:nth-child(1),
+#how-to-play > .htp-section:nth-child(2) {
+  grid-column: 1;
+}
+
