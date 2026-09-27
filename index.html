@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PARRY DEPTH — Roguelike</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💀</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+
+  <!-- THREE.JS CANVAS -->
+  <canvas id="game-canvas"></canvas>
+
+  <!-- ═══════════════════════════════════════════ HUD ═══════ -->
+  <div id="hud" class="hidden">
+    <!-- HP -->
+    <div id="hud-left">
+      <div id="hp-row">
+        <span class="hud-icon">♥</span>
+        <div id="hp-bar-bg"><div id="hp-bar-fill"></div></div>
+        <span id="hp-label">100/100</span>
+      </div>
+      <!-- Sekiro Posture / Stance meter -->
+      <div id="posture-row">
+        <span class="hud-icon" style="color: #ff9800;">⚡</span>
+        <div id="posture-bar-bg"><div id="posture-bar-fill"></div></div>
+        <span id="posture-label">POSTURE 0%</span>
+      </div>
+    </div>
+
+    <!-- Floor / Room -->
+    <div id="hud-right">
+      <div id="floor-label">FLOOR 1</div>
+      <div id="room-label">ROOM 1/?</div>
+    </div>
+
+    <!-- Parry / Dash combat panel -->
+    <div id="hud-combat">
+      <!-- Dash stacks -->
+      <div id="dash-row">
+        <span class="hud-combat-label">DASH</span>
+        <span id="dash-stacks">◇◇◇</span>
+      </div>
+      <!-- Parry chain -->
+      <div id="parry-row">
+        <span class="hud-combat-label">CHAIN</span>
+        <span id="parry-chain">○○○ ×0</span>
+      </div>
+      <!-- Parry speed buff flash -->
+      <div id="parry-buff">⚡ SPEED</div>
+      <!-- Guard / Block status -->
+      <div id="guard-status">🛡 BLOCKING</div>
+    </div>
+
+    <!-- Phase 6: Active combat skills -->
+    <div id="hud-skills"></div>
+
+    <!-- Sekiro Target HUD (Health & Posture Bar + Deathblow prompt) -->
+    <div id="enemy-target-hud" class="hidden">
+      <div id="target-name">TARGET</div>
+      <div class="target-bar-wrap">
+        <div id="target-hp-bg"><div id="target-hp-fill"></div></div>
+      </div>
+      <div class="target-bar-wrap">
+        <div id="target-posture-bg"><div id="target-posture-fill"></div></div>
+      </div>
+      <div id="target-deathblow-cue" class="hidden">● DEATHBLOW READY [R-CLICK]</div>
+    </div>
+
+    <!-- Phase 3: Mission HUD panel -->
+    <div id="hud-mission">
+      <div id="mission-title">MISSION</div>
+      <div id="mission-step">―</div>
+      <div id="mission-room-obj" style="opacity:0">▸ ―</div>
+    </div>
+  </div>
+
+  <!-- Phase 3: Objective toast -->
+  <div id="objective-toast"></div>
+
+  <!-- ═══════════════════════════════════════ MAIN MENU ═══════ -->
+  <div id="main-menu">
+    <div class="menu-bg-noise"></div>
+    <div id="menu-content">
+      <h1 id="game-title">PARRY<br /><span>DEPTH</span></h1>
+      <p id="game-subtitle">read the tell. parry. backstab.</p>
+
+      <div id="menu-controls-hint">
+        <p><kbd>WASD</kbd> Move &nbsp;|&nbsp; <kbd>L-Click</kbd> Tap: Parry / Hold: Block &nbsp;|&nbsp; <kbd>R-Click</kbd> Dagger &nbsp;|&nbsp; <kbd>Space</kbd> Dash</p>
+      </div>
+
+      <div id="menu-buttons">
+        <button id="btn-start-run" class="btn-primary">▶ START RUN</button>
+        <button id="btn-continue-run" class="btn-secondary hidden">◈ CONTINUE RUN</button>
+        <button id="btn-abandon-run" class="btn-danger hidden">✕ ABANDON SAVED RUN</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ SKILL SCREEN ═══════ -->
+  <div id="skill-screen" class="overlay-screen hidden">
+    <div class="overlay-bg"></div>
+    <div class="overlay-content">
+      <h2 class="overlay-title">COMBAT PROTOCOL — CHOOSE SKILL</h2>
+      <p class="overlay-sub">Milestone achieved: augment your dagger, parry, or dash</p>
+      <div id="skill-cards" class="card-row">
+        <!-- 3 cards injected -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ SHOP SCREEN ═══════ -->
+  <div id="shop-screen" class="overlay-screen hidden">
+    <div class="overlay-bg"></div>
+    <div class="overlay-content">
+      <h2 class="overlay-title">◈ FACILITY EXCHANGE</h2>
+      <p class="overlay-sub">HP available: <span id="shop-coins">100</span></p>
+      <div id="shop-offers" class="card-row"></div>
+      <button class="btn-secondary" id="btn-shop-leave">LEAVE</button>
+    </div>
+  </div>
+
+  <!-- ═════════════════════════════════════ REST SCREEN ═══════ -->
+  <div id="rest-screen" class="overlay-screen hidden">
+    <div class="overlay-bg"></div>
+    <div class="overlay-content">
+      <h2 class="overlay-title">⬟ REST POINT</h2>
+      <div class="card-row">
+        <div class="choice-card" id="rest-heal">
+          <div class="card-icon">♥</div>
+          <div class="card-name">RECOVER</div>
+          <div class="card-desc">Restore <b>30%</b> of Max HP</div>
+        </div>
+        <div class="choice-card" id="rest-damage">
+          <div class="card-icon">⚡</div>
+          <div class="card-name">SHARPEN</div>
+          <div class="card-desc">+10% damage for this Run</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════ MYSTERY SCREEN ═══════ -->
+  <div id="mystery-screen" class="overlay-screen hidden">
+    <div class="overlay-bg"></div>
+    <div class="overlay-content">
+      <h2 class="overlay-title">☣ ANOMALOUS SHRINE</h2>
+      <p class="overlay-sub">A disturbing facility apparatus humming with erratic resonance</p>
+      <div id="mystery-choices" class="card-row"></div>
+      <button class="btn-secondary" id="btn-mystery-skip" style="margin-top:10px">WALK AWAY</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ TREASURE SCREEN ═══════ -->
+  <div id="treasure-screen" class="overlay-screen hidden">
+    <div class="overlay-bg"></div>
+    <div class="overlay-content">
+      <h2 class="overlay-title">⬡ TREASURE CHEST</h2>
+      <p class="overlay-sub">Choose one upgrade — free of cost</p>
+      <div id="treasure-cards" class="card-row"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ PAUSE MENU ═══════ -->
+  <div id="pause-menu" class="overlay-screen hidden">
+    <div class="overlay-bg solid"></div>
+    <div class="overlay-content narrow">
+      <h2 class="overlay-title">PAUSED</h2>
+      <button class="btn-primary" id="btn-resume">▶ RESUME</button>
+      <button class="btn-secondary" id="btn-save-exit">⬡ SAVE &amp; EXIT</button>
+      <button class="btn-danger" id="btn-abandon">✕ ABANDON RUN</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ CONFIRM DIALOG ═══════ -->
+  <div id="confirm-dialog" class="overlay-screen hidden">
+    <div class="overlay-bg solid"></div>
+    <div class="overlay-content narrow">
+      <h2 class="overlay-title" id="confirm-title">ARE YOU SURE?</h2>
+      <p id="confirm-message"></p>
+      <div style="display:flex;gap:16px;justify-content:center">
+        <button class="btn-danger" id="btn-confirm-yes">YES</button>
+        <button class="btn-secondary" id="btn-confirm-no">NO</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ GAME OVER ═══════ -->
+  <div id="game-over-screen" class="overlay-screen hidden">
+    <div class="overlay-bg solid"></div>
+    <div class="overlay-content narrow">
+      <h2 class="overlay-title" id="go-title">YOU DIED</h2>
+      <div id="go-stats"></div>
+      <div id="go-meta-gain"></div>
+      <button class="btn-primary" id="btn-go-menu">RETURN TO MENU</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ DAMAGE NUMBERS ═══════ -->
+  <div id="damage-numbers"></div>
+
+  <!-- PS1 overlays -->
+  <div id="scanlines"></div>
+  <div id="noise-overlay"></div>
+  <div id="fade"></div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+
+</html>

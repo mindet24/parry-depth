@@ -1,0 +1,214 @@
+# New Game Project Brief — Parry Roguelike (2.5D Horror)
+
+## Instructions for the Gen AI
+
+Create a new, independent game project from scratch. This brief supersedes all earlier game briefs and any code or specifications in the existing project. Do not inspect or reuse the old game's code.
+
+- Target a single-player 2.5D browser game. Recommend a suitable engine/framework for the target and explain why in the first response.
+- Work in phases. Before each phase, give a 3–5 line plan and Definition of Done, then wait for the user's explicit “โอเค”. Do not combine phases.
+- Ask before changing the core combat, progression, room secrecy, or other locked rules below. For unresolved tuning values, propose sensible defaults in the phase plan and clearly label them as proposals.
+- At the end of each phase, summarize changes and give concrete browser steps to test.
+
+## High concept
+
+A PS1-era low-poly 2.5D horror roguelike about a dagger-wielding survivor who reads enemy attack rhythms, parries at the last moment, dashes behind enemies, and lands powerful backstabs. Explore large, randomized multi-route floors, fight distinctive monsters and bosses, then advance to a new Floor after each Boss. The Run continues indefinitely until death or deliberate abandonment.
+
+The four core systems are **Mission, Parry, Dash, and Backstab**. The central combat fantasy is: **read the tell → parry → gain a brief speed burst and Dash charge → reposition behind the target → backstab**. Build the game around this loop.
+
+## Art and mood
+
+- Use original PS1-era low-poly psychological horror art, with a clinical sci-fi test-facility mood and sterile geometry corrupted by disturbing decay. Mouthwashing and Portal are broad mood/visual-design references only.
+- Create original characters, creatures, rooms, props, layouts, dialogue, sound, and effects. Do not recreate either reference game's assets, characters, story, signature props, layouts, audio, or dialogue.
+- Use a fixed 3/4 isometric camera, textured surfaces, layered geometry, strong depth cues, grounded shadows, hard practical lighting, restrained low-resolution textures, and carefully used PS1-style dithering/texture warping. The result must read as 2.5D, not a flat arena.
+- Make spaces eerie and oppressive through isolation, clinical unease, disorientation, environmental storytelling, and unsettling changes to orderly spaces. Preserve clear combat telegraphs, exits, and player readability.
+- Search OpenGameArt first for suitable sound effects and ambience. Check licenses and attribution, maintain an asset/credit list, and include required credits. Create or generate original replacements if suitable assets are unavailable. SoLoud is an optional audio playback library, not an asset library; use it only if appropriate for the chosen stack.
+
+## Player combat identity — MVP core
+
+### Character and weapons
+
+- The character carries a sword fixed to their back as a visible piece of equipment; it does not orbit or float around them.
+- The character holds a dagger in the right hand, ready throughout gameplay.
+- Use the left hand in the parry/counter animation as appropriate. Make the dagger, back-mounted sword, and their functions visually distinct.
+- A basic forward dagger jab is intentionally weak. A dagger strike from behind is a high-damage Backstab. Communicate the angle and damage result clearly with animation, hit reaction, sound, and UI feedback.
+
+### Rhythm Parry and Dash
+
+- Enemy attacks use a visible rhythmic tell, such as a flashing ring that contracts or pulses toward a clear release point. Each enemy must have a learnable rhythm and distinct attack pattern.
+- Press **F** at the valid timing window to Parry. A successful Parry deflects/negates that attack, plays a crisp response animation and sound, and grants one Dash charge (one Stack). A mistimed press does not grant a charge and should have a readable, fair consequence.
+- Every successful Parry also grants a noticeable **0.5-second movement-speed buff**. Make the burst immediate and responsive, and tune its magnitude so it feels exciting without making movement slippery. Show clear visual/audio feedback.
+- Dash is a deliberate forward burst controlled by the player. It consumes one Stack and can pass through or reposition around enemies. It should enable the player to reach an enemy's back and perform a strong Backstab; do not make Dash damage replace the Backstab positioning skill.
+- Track consecutive successful Parries. On every third consecutive Parry, grant one bonus Dash Stack, then reset the three-Parry counter and continue the chain. Display both available Dash Stacks and chain progress clearly. Getting hit or missing a Parry breaks the consecutive-Parry chain; do not erase already-earned Dash Stacks by default.
+- Tune exact timing windows, stack cap, dash distance, and damage in the first combat prototype. Put proposed starting values in the phase plan and seek approval if they materially change this core loop.
+- Bosses must be designed around readable rhythms, varied patterns, safe responses, and opportunities to get behind them. Avoid making bosses challenging only by increasing HP or damage.
+- Keep ordinary movement responsive and slightly brisk, with quick acceleration and stopping that support aggressive repositioning. Recommend a starting movement speed in the first-phase plan; tune it through playtesting.
+
+### Mission system — core
+
+- Missions are a core system alongside Parry, Dash, and Backstab. Give each Floor a clear primary objective that motivates exploration and leads toward its Boss; communicate objective and progress in the HUD.
+- Use room objectives to vary what the player does between fights, such as finding a route key, disabling a threat source, recovering an object, or reaching a marked area. These are examples for a small coherent MVP set, not a request for a large quest/dialogue system.
+- Mission objectives must work with hidden randomized room contents and branching routes. Give enough direction to make progress without revealing unreached room types or future rooms.
+- Keep mission steps readable, short, and connected to the horror setting. Avoid repetitive fetch tasks; missions should affect exploration, combat choices, or route access.
+
+### Skill progression — replace XP/item level-ups
+
+- Remove the old EXP crystal loop, Run Level system, random level-up item cards, auto-attacking weapon pool, passive item pool, and pre-Run permanent Meta point shop. Do not implement those legacy systems.
+- Keep skill upgrades, but focus them on the dagger, Parry, Dash, and Backstab. Examples: stronger Backstab multiplier; slightly wider Parry timing window; a brief damage guard after a successful Parry; a sharper counter-thrust; increased Dash distance; a Dash that marks a target for a stronger Backstab; or a Boss Stagger bonus after a completed Parry chain.
+- Skills must change the combat feel in a clear, testable way. Do not recreate a random pool of unrelated weapons/items under a different name.
+- The exact method and cadence for earning skill upgrades is not locked yet. In the first progression proposal, recommend a simple deterministic skill-unlock/upgrade cadence tied to meaningful milestones (for example, boss victories or room challenges) and ask the user before implementing that progression system.
+
+## Shield path and captured enemy powers — future unlock, not MVP core
+
+- The shield is a separate playable path/class that the player unlocks later. The dagger Parry path is the initial/default path and remains the main MVP combat system.
+- Shield gameplay should center on blocking/Parrying and absorbing a distinctive enemy or Boss power. Example: absorb a fire projectile and store a limited-use fire attack for a later encounter/Floor.
+- Captured powers must have strict limits: a small number of storage slots, limited charges or cooldowns, and clear replacement/overwrite rules. Show the stored power and remaining uses clearly.
+- Do not add this shield path or power-storage system to the first playable MVP unless the user explicitly schedules it as a later phase. Do not mix it into the initial dagger skill tree.
+
+## Optional future movement feature: Roll
+
+- Roll/Dodge may be considered in a later phase as an optional movement ability. It is not part of the core MVP controls and is not required for the initial combat prototype.
+- First make ordinary movement, Parry's 0.5-second speed burst, Dash charges, and Backstab positioning feel good. Only propose Roll after testing identifies a specific movement/defense gap; ask the user before implementing it.
+
+## Large randomized floors and room routes
+
+- Floors should feel like larger explorable spaces made from connected rooms/areas, with multiple entrances, exits, branches, and routes onward. Take broad structural inspiration from multi-route roguelikes such as Dead Cells and Neon Abyss; do not copy their maps, art, enemies, or presentation.
+- Randomize room layouts, room connections, encounters, and route options so successive Floors create different explorations. Provide more than one viable way forward in appropriate areas, with paths that can branch and reconnect. The Boss route must be reachable and the Floor must still culminate in a Boss encounter.
+- Keep future room contents unknown. Do not show a map with unrevealed room types, a destination-selection menu, or advance spoilers. The player discovers paths by exploring the physical space and entering doorways.
+- Rooms and areas should be meaningfully larger than a single-screen arena. Use camera follow, navigable landmarks, loops/shortcuts where useful, and clear spatial cues so players do not get lost without intention.
+- Room types may include Safe/Entry, Combat, Elite, Treasure, Shop, Rest, Mystery, and Boss. Each must have a distinct visual identity and meaningful behavior if included.
+- Exact room count, floor dimensions, route branching rules, and backtracking policy are not locked yet. Recommend concrete values in the level-design phase, accounting for the user's request for larger floors and multiple paths, and ask before locking them.
+- After defeating a Floor Boss, continue directly to the next numbered Floor without returning to Floor 1 or starting a fresh Run. Preserve the Run until death or deliberate abandonment.
+
+## Enemies and encounter design
+
+- Each enemy archetype needs a distinct movement pattern, attack rhythm, tell, and counterplay. Avoid enemies that only chase and touch the player.
+- Include ordinary enemies, dangerous Elite variants, and a Boss with multiple recognizable patterns/phases. Elites and Bosses should challenge timing, facing, spacing, route choice, and the player's ability to create a Backstab opportunity.
+- Telegraphs must clearly communicate timing and danger area. Give attacks recovery windows or other fair opportunities to respond.
+- Enemy attack rhythms should be learnable, but later rooms may remix timing/pattern combinations to keep mastery engaging.
+- Combat rooms remain sealed until their required enemies are defeated; then open physical exits.
+
+## Fun and playtest requirements
+
+- Prove the core combat loop before broadening content: build a small test space, one standard enemy, one Elite, and a simple Boss prototype. Focus on the feel/readability of the weak front jab, Parry timing, Dash control, positioning, and high-damage Backstab.
+- Prototype at least one concise Mission objective that motivates exploration and can be completed through a randomized room layout.
+- During browser playtests ask: Can a new player read the ring rhythm? Can they tell a successful Parry from a miss? Does each Parry feel rewarding? Can they deliberately get behind a target? Does Backstab feel worth the risk? Is the Boss challenging through patterns rather than inflated stats?
+- Give rooms tactical identities through cover, narrow lanes, open spaces, elevation/depth cues, and readable hazards. Leave viable evasion routes and do not cover exits or tells with decoration.
+- Use sound, lighting, animation, hit-stop, restrained screen shake, and particles to reward precise actions without obscuring gameplay.
+
+## Run persistence and game flow
+
+- A Run starts at Floor 1 and continues across Floors indefinitely. Current health and learned Run skills carry forward after a Boss victory unless a future, user-approved rule changes this.
+- Death ends the Run. Deliberate Abandon Run ends it only after confirmation. Do not restart the Run automatically after a Boss.
+- Pause with Escape. Include Resume and Save & Exit. Continue from a safe checkpoint after reopening the browser; do not treat Save & Exit as death or abandonment.
+- Save at safe room-entry/room-clear moments, not mid-attack. Store enough state to restore the same Run, Floor, route seed, current area, health, skills, and resolved room state. If resuming an in-progress combat room, restart that encounter from its entry state rather than restoring an attack animation.
+- Do not add profile Meta EXP, Meta Levels, permanent upgrade points, or permanent stat/weapon purchases unless the user asks for them again.
+
+## Main menu and HUD
+
+- Main menu: Start Run and Continue Run when a checkpoint exists. Do not show the retired Meta Level/pre-Run item selection screen.
+- In-run HUD: health, current Floor/progress, Parry feedback, Dash Stack count, and three-Parry chain progress. Keep it readable and unobtrusive.
+- Show concise feedback for successful/missed Parries, Backstab angle/bonus, skill unlocks, room transitions, and Boss phase changes.
+- Do not reveal upcoming room types or future route contents in HUD/minimap.
+
+## Technical and project workflow
+
+- Recommend the game engine/framework before implementation; engines are allowed. Do not rule out Phaser, Unity, Godot, or other suitable tools without reason.
+- Explain the 2.5D coordinate/camera approach, large-room camera behavior, and proposed folder structure in the first-phase plan.
+- Use a new project structure appropriate to the selected stack. Never copy an unrelated project's code or structure.
+- Work one phase at a time, waiting for “โอเค” before writing code for that phase. Include a Definition of Done and test steps at each phase end.
+
+## Suggested phases
+
+1. Recommend stack and build a visual 2.5D room/player movement prototype, including the held dagger, back-mounted sword, brisk responsive movement, and camera follow.
+2. Prototype combat: enemy rhythm tells, F Parry, the 0.5-second Parry speed buff, Dash Stacks, three-Parry bonus, weak front jab, and Backstab.
+3. Add one concise Mission objective and verify it guides exploration without revealing future room types.
+4. Tune combat with distinct enemy and Elite behaviors and a basic Boss pattern prototype.
+5. Build large multi-route procedural Floors, exploration, hidden room contents, physical doors, and Boss access.
+6. Add skill progression using the user-approved deterministic cadence; do not bring back XP/item level-ups.
+7. Add room variety, special room behaviors, checkpoints, endless Floor progression, death/abandon flow, and Continue Run.
+8. Add visual/audio polish, sourced and credited OpenGameArt assets, balance, and browser playthrough.
+9. Consider the Shield/captured-power path and optional Roll only as separately scoped future features after the core is enjoyable.
+
+## MVP acceptance criteria
+
+- The character visibly carries a sword fixed on the back and holds a dagger ready in the right hand; nothing orbits the character.
+- Forward dagger jabs deal low damage; attacks from behind produce a noticeably stronger Backstab.
+- Enemies telegraph rhythmic attacks. F Parry can be timed against them and successful Parries grant Dash Stacks.
+- A successful Parry gives a noticeable 0.5-second movement-speed buff.
+- Every three consecutive Parries grant one bonus Dash Stack and reset the chain counter; UI communicates both values.
+- The player can spend Dash Stacks to reposition and create Backstab opportunities.
+- Standard enemies, Elites, and the Boss use distinct, readable patterns and fair counterplay.
+- Floors are larger than single-screen arenas and contain randomized branching/reconnecting routes, multiple physical exits, and hidden room contents; the Boss remains reachable at the end.
+- Each Floor has a clear primary Mission objective and concise room objectives that guide exploration without spoiling future room types.
+- Boss victory advances to the next Floor without resetting the Run. Death or confirmed abandonment ends it.
+- Dagger/Parry skill progression is meaningful and does not use the removed random EXP-level item system.
+- The Shield/captured-enemy-power system is identified as a later unlock and does not displace the initial Parry path.
+- Visuals have texture, depth, low-poly identity, and horror atmosphere. Audio assets have verified license/attribution.
+- The finished MVP has been played in a real browser, with known limitations reported clearly.
+
+งาน: เพิ่ม PS1-style post-processing layer ให้เกมที่มีอยู่ (ไม่แตะ game logic เดิม)
+
+บริบท: โปรเจกต์นี้เป็น HTML/CSS/Vanilla JS + Canvas 2D (ไฟล์ index.html, main.js, player.js,
+enemy.js, weapon.js, room.js ฯลฯ ตามที่มีอยู่แล้ว) ต้องการเพิ่มเอฟเฟกต์ภาพให้ดูเหมือนกราฟิก
+ยุค PS1/retro horror (dithering, จานสีจำกัด, หมอก, ภาพหยาบ) โดยไม่กระทบ gameplay ที่ทำงานอยู่แล้ว
+
+แนวทางที่ต้องใช้ (สำคัญ — อ่านก่อนเขียนโค้ด):
+เกมวาดทุกอย่างลง canvas หลักตามปกติเหมือนเดิมทุกอย่าง (ห้ามแก้ enemy.js, weapon.js, player.js,
+room.js, projectile.js, upgrade.js, progression.js เลย) จากนั้นค่อยรัน "post-process pass"
+เพิ่มทีหลังสุดในทุกเฟรม ก่อน present ภาพให้ผู้เล่นเห็น ให้ทำตามสถาปัตยกรรมนี้:
+
+1. สร้าง offscreen canvas ความละเอียดต่ำ (เช่น 1/3 หรือ 1/4 ของขนาดจอจริง) — เกมทั้งหมดวาดลง
+   offscreen canvas นี้แทนที่จะวาดลง canvas หลักตรงๆ
+2. หลังวาดเฟรมเสร็จ ให้ copy จาก offscreen canvas ไปยัง canvas หลัก (ที่แสดงผลจริง) ด้วย
+   `context.imageSmoothingEnabled = false` และ CSS `image-rendering: pixelated;` บน canvas หลัก
+   เพื่อให้ได้ภาพหยาบแบบ PS1 เวลาขยาย
+3. เพิ่มไฟล์ใหม่ชื่อ `postprocess.js` แยกต่างหาก ให้มีฟังก์ชันเหล่านี้ (เรียกใช้จาก main.js
+   ตรงจุดที่ present เฟรมสุดท้าย):
+
+   a) applyColorQuantization(imageData, levelsPerChannel)
+      — ลดจำนวนระดับสีต่อ channel (R,G,B) ให้เหลือน้อยลง (เช่น 5-6 ระดับต่อ channel
+      แทน 256 ระดับปกติ) เพื่อให้ได้จานสีจำกัดแบบ PS1
+
+   b) applyBayerDithering(imageData, matrixSize)
+      — ใช้ Bayer matrix (4x4 หรือ 8x8) ทำ ordered dithering ก่อนหรือหลัง quantize สี
+      เพื่อลด banding และได้ลาย dither แบบเกมยุคเก่า
+
+   c) applyVignetteFog(context, width, height, color, intensity)
+      — วาด radial gradient จากขอบจอเข้ามา (มืด/หมอกจางๆ) ทับบนภาพ
+
+   d) applyScanlines(context, width, height, opacity)
+      — วาดเส้น scanline แนวนอนบางๆ สลับความทึบ จำลองจอ CRT (ทำเป็น optional
+      เปิด/ปิดได้ เพราะบางคนไม่ชอบ)
+
+   e) snapToPixelGrid(x, y, gridSize) → { x, y }
+      — helper function ให้ player.js/enemy.js เรียกใช้ตอน draw() เพื่อปัดเศษตำแหน่งวัตถุ
+      ลงกริดพิกเซลก่อนวาด (จำลอง vertex jitter/snap แบบ PS1) — ทำเป็นฟังก์ชัน utility
+      ที่เรียกใช้แยก ไม่ต้องไปแก้ physics/movement logic จริงของ player/enemy
+
+4. เพิ่ม config object ใน postprocess.js ให้เปิด/ปิดหรือปรับความแรงแต่ละเอฟเฟกต์ได้ง่ายๆ เช่น:
+   {
+     renderScale: 0.33,        // สัดส่วนความละเอียด offscreen canvas
+     colorLevels: 6,           // ระดับสีต่อ channel
+     ditherEnabled: true,
+     ditherMatrixSize: 4,
+     vignetteIntensity: 0.35,
+     scanlinesEnabled: true,
+     scanlineOpacity: 0.08,
+     pixelSnapGrid: 2,         // px
+   }
+
+ข้อควรระวังเรื่อง performance:
+- การทำ pixel manipulation ผ่าน getImageData/putImageData ทุกเฟรมที่ความละเอียดจอเต็มจะช้ามาก
+  เพราะงั้นข้อ 1 (วาดที่ความละเอียดต่ำก่อน) สำคัญมาก — quantize/dither จะทำงานกับพิกเซล
+  น้อยกว่าจอจริงหลายเท่า ทำให้ performance รับได้
+- ถ้า dithering + quantization รวมกันแล้วยัง drop เฟรมอยู่ ให้ลองปิด dithering ก่อน (ให้ config
+  ปิดได้จาก true/false) แล้ววัด FPS เทียบกัน บอกผลที่วัดได้มาด้วย
+
+Definition of Done:
+- เกมเล่นได้ปกติทุกอย่างเหมือนเดิม (ไม่มี regression ใน gameplay)
+- ภาพที่เห็นมีลักษณะหยาบ, จานสีจำกัด, มี dithering pattern ที่สังเกตเห็นได้, มี vignette รอบขอบจอ
+- เปิด/ปิดแต่ละเอฟเฟกต์ผ่าน config object ได้จริง ทดสอบปิด-เปิดให้เห็นความต่างชัดเจน
+- บอก FPS ก่อน-หลังเปิดเอฟเฟกต์ทั้งหมด (เทียบ baseline ปกติ) ว่าต่างกันแค่ไหน
+
+ห้ามทำ: อย่าเปลี่ยนขนาด/ตำแหน่งจริงของ hitbox หรือ physics ใดๆ เอฟเฟกต์ทั้งหมดต้องเป็นแค่
+ภาพที่แสดงผล (visual only) ไม่กระทบการชนหรือ logic การเล่นเกมเลย
