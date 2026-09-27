@@ -4,13 +4,13 @@
  * Visual & Combat Mechanics:
  *   - Character visibly carries a broad SWORD sheathed on their BACK.
  *   - Character holds a DAGGER in the right hand ready for jabs/backstabs.
- *   - LEFT CLICK (or F key) controls the Sword Defense:
+ *   - RIGHT CLICK (or F key) controls the Sword Defense:
  *       • Quick Tap (<0.20s): Draws sword from behind back in a crisp PARRY deflect animation.
  *         Timed with enemy rhythm tells to deflect attacks, grant Dash Stacks, Parry Chain, and Speed buff.
  *       • Hold (>0.20s): Enters continuous BLOCK guard stance holding sword in front.
  *         STRICTLY NOT A PARRY — absorbs 80% incoming damage, never grants Dash Stacks or Parry bonuses!
  *       • Release: Smoothly sheathes sword back onto the character's back.
- *   - RIGHT CLICK (or E/J keys): Quick Dagger Jab / Backstab strike.
+ *   - LEFT CLICK (or E/J keys): Quick Dagger Jab / Backstab strike / Sekiro Deathblow.
  *   - SPACE: Dash burst consuming 1 Dash Stack.
  */
 import * as THREE from 'three';

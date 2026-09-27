@@ -333,7 +333,7 @@ export class Game {
       }
     }
 
-    // ── Active Dagger Attack (Right click / J / E / K) ──────────
+    // ── Active Dagger Attack (Left click / J / E / K) ──────────
     // Recovery guard: one click = one thrust; player cannot spam attacks
     if (this._attackRecovery > 0) this._attackRecovery -= dt;
 

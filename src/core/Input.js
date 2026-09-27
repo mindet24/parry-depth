@@ -49,19 +49,19 @@ export class Input {
     return false;
   }
 
-  /** Trigger for Parry/Block initiation: Left Click (Mouse0) or F key */
+  /** Trigger for Parry/Block initiation: Right Click (Mouse2) or F key */
   consumeParryPress() {
-    return this.consumePress('Mouse0') || this.consumePress('KeyF');
+    return this.consumePress('Mouse2') || this.consumePress('KeyF');
   }
 
   /** Is the Parry/Block button currently held down? */
   isParryHeld() {
-    return this.isDown('Mouse0') || this.isDown('KeyF');
+    return this.isDown('Mouse2') || this.isDown('KeyF');
   }
 
-  /** Check for attack trigger: Right Click (Mouse2), J, E, or K */
+  /** Check for attack trigger: Left Click (Mouse0), J, E, or K */
   consumeAttack() {
-    return this.consumePress('Mouse2') || this.consumePress('KeyJ') || this.consumePress('KeyE') || this.consumePress('KeyK');
+    return this.consumePress('Mouse0') || this.consumePress('KeyJ') || this.consumePress('KeyE') || this.consumePress('KeyK');
   }
 
   getRaw() {
