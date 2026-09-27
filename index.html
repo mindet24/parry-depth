@@ -5,7 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PARRY DEPTH — Roguelike</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💀</text></svg>" />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💀</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./style.css" />
@@ -22,13 +23,17 @@
     <div id="hud-left">
       <div id="hp-row">
         <span class="hud-icon">♥</span>
-        <div id="hp-bar-bg"><div id="hp-bar-fill"></div></div>
+        <div id="hp-bar-bg">
+          <div id="hp-bar-fill"></div>
+        </div>
         <span id="hp-label">100/100</span>
       </div>
       <!-- Sekiro Posture / Stance meter -->
       <div id="posture-row">
         <span class="hud-icon" style="color: #ff9800;">⚡</span>
-        <div id="posture-bar-bg"><div id="posture-bar-fill"></div></div>
+        <div id="posture-bar-bg">
+          <div id="posture-bar-fill"></div>
+        </div>
         <span id="posture-label">POSTURE 0%</span>
       </div>
     </div>
@@ -64,10 +69,14 @@
     <div id="enemy-target-hud" class="hidden">
       <div id="target-name">TARGET</div>
       <div class="target-bar-wrap">
-        <div id="target-hp-bg"><div id="target-hp-fill"></div></div>
+        <div id="target-hp-bg">
+          <div id="target-hp-fill"></div>
+        </div>
       </div>
       <div class="target-bar-wrap">
-        <div id="target-posture-bg"><div id="target-posture-fill"></div></div>
+        <div id="target-posture-bg">
+          <div id="target-posture-fill"></div>
+        </div>
       </div>
       <div id="target-deathblow-cue" class="hidden">● DEATHBLOW READY [L-CLICK]</div>
     </div>
@@ -83,46 +92,25 @@
   <!-- Phase 3: Objective toast -->
   <div id="objective-toast"></div>
 
+  <!-- ═══════════════════════════════════════ MAIN MENU ═══════ -->
   <div id="main-menu">
     <div class="menu-bg-noise"></div>
     <div id="menu-content">
+      <h1 id="game-title">PARRY<br /><span>DEPTH</span></h1>
+      <p id="game-subtitle">read the tell. parry. backstab.</p>
 
-      <!-- ── Left: COMBAT ──────────────────────────────────── -->
-      <div class="htp-section menu-side-card">
-        <div class="htp-heading">⚔ COMBAT</div>
-        <div class="htp-rows">
-          <div class="htp-row"><span class="htp-badge dmg">DAGGER</span> ฟัน + สร้าง Posture damage แก่ศัตรู</div>
-          <div class="htp-row"><span class="htp-badge par">PARRY</span> Parry ทันช่วง <b>TELL</b> (กะพริบแดง) → counter + Posture สูง</div>
-          <div class="htp-row"><span class="htp-badge blk">BLOCK</span> รับดาเมจลดลง แต่สะสม Posture ตัวเอง</div>
-          <div class="htp-row"><span class="htp-badge dsh">DASH</span> พุ่งทะลุศัตรู — หลบหรือจัดตำแหน่ง</div>
-        </div>
+      <div id="menu-controls-hint">
+        <p><kbd>WASD</kbd> Move &nbsp;|&nbsp; <kbd>L-Click</kbd> Dagger Thrust &nbsp;|&nbsp; <kbd>R-Click</kbd> Tap:
+          Parry / Hold: Block &nbsp;|&nbsp; <kbd>Space</kbd> Dash</p>
       </div>
 
-      <!-- ── Center: Title + Buttons ───────────────────────── -->
-      <div id="menu-center">
-        <h1 id="game-title">PARRY<br /><span>DEPTH</span></h1>
-        <p id="game-subtitle">read the tell. parry. backstab.</p>
-        <div id="menu-buttons">
-          <button id="btn-start-run" class="btn-primary">▶ START RUN</button>
-          <button id="btn-continue-run" class="btn-secondary hidden">◈ CONTINUE RUN</button>
-          <button id="btn-abandon-run" class="btn-danger hidden">✕ ABANDON SAVED RUN</button>
-        </div>
+      <div id="menu-buttons">
+        <button id="btn-start-run" class="btn-primary">▶ START RUN</button>
+        <button id="btn-continue-run" class="btn-secondary hidden">◈ CONTINUE RUN</button>
+        <button id="btn-abandon-run" class="btn-danger hidden">✕ ABANDON SAVED RUN</button>
       </div>
-
-      <!-- ── Right: POSTURE & DEATHBLOW ────────────────────── -->
-      <div class="htp-section menu-side-card">
-        <div class="htp-heading">⚡ POSTURE &amp; DEATHBLOW</div>
-        <div class="htp-rows">
-          <div class="htp-row">ทุกตีและทุก Parry เพิ่มแถบ <b>POSTURE ⚡</b> ของศัตรู</div>
-          <div class="htp-row">Posture เต็ม → ศัตรู <b>stagger</b> 4 วินาที</div>
-          <div class="htp-row">ขณะ stagger จุดแดง <b>●</b> ขึ้น → <b>L-Click = DEATHBLOW</b> (ตายทันที)</div>
-          <div class="htp-row">Posture ของ <b>ตัวเอง</b> เต็ม → เราหยุดชะงักแทน!</div>
-        </div>
-      </div>
-
     </div>
   </div>
-
 
   <!-- ════════════════════════════════════ SKILL SCREEN ═══════ -->
   <div id="skill-screen" class="overlay-screen hidden">
