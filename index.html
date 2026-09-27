@@ -86,63 +86,40 @@
   <div id="main-menu">
     <div class="menu-bg-noise"></div>
     <div id="menu-content">
-      <h1 id="game-title">PARRY<br /><span>DEPTH</span></h1>
-      <p id="game-subtitle">read the tell. parry. backstab.</p>
 
-      <!-- ── How To Play ─────────────────────────────────── -->
-      <div id="how-to-play">
-        <div class="htp-section">
-          <div class="htp-heading">⌨ CONTROLS</div>
-          <div class="htp-grid">
-            <span class="htp-key">WASD</span><span class="htp-val">Move</span>
-            <span class="htp-key">L-Click</span><span class="htp-val">Dagger Thrust</span>
-            <span class="htp-key">R-Click Tap</span><span class="htp-val">Parry</span>
-            <span class="htp-key">R-Click Hold</span><span class="htp-val">Block</span>
-            <span class="htp-key">Space</span><span class="htp-val">Backstep Dash (pass through enemies)</span>
-            <span class="htp-key">Esc</span><span class="htp-val">Pause / Save</span>
-          </div>
-        </div>
-
-        <div class="htp-section">
-          <div class="htp-heading">⚔ COMBAT</div>
-          <div class="htp-rows">
-            <div class="htp-row"><span class="htp-badge dmg">DAGGER</span> ฟัน + สร้าง Posture damage แก่ศัตรู</div>
-            <div class="htp-row"><span class="htp-badge par">PARRY</span> ถ้า Parry ทันช่วง <b>TELL</b> (กะพริบแดง) จะ counter + Posture สูงมาก</div>
-            <div class="htp-row"><span class="htp-badge blk">BLOCK</span> รับดาเมจลดลง แต่สะสม Posture ของตัวเองด้วย</div>
-            <div class="htp-row"><span class="htp-badge dsh">DASH</span> พุ่งทะลุศัตรู — ใช้หลบหรือจัดตำแหน่ง</div>
-          </div>
-        </div>
-
-        <div class="htp-section">
-          <div class="htp-heading">⚡ POSTURE &amp; DEATHBLOW</div>
-          <div class="htp-rows">
-            <div class="htp-row">ทุกตีและทุก Parry จะเพิ่มแถบ <b>POSTURE ⚡</b> ของศัตรู</div>
-            <div class="htp-row">เมื่อ Posture เต็ม → ศัตรูจะ <b>stagger</b> 4 วินาที</div>
-            <div class="htp-row">ขณะ stagger จุดแดง <b>●</b> จะขึ้นบนตัวศัตรู — <b>L-Click เพื่อ DEATHBLOW</b> (ตายทันที)</div>
-            <div class="htp-row">ถ้า Posture ของ <b>ตัวเอง</b> เต็ม → เราหยุดชะงักแทน!</div>
-          </div>
-        </div>
-
-        <div class="htp-section">
-          <div class="htp-heading">🗺 PROGRESSION</div>
-          <div class="htp-rows">
-            <div class="htp-row">ล้างห้องทั้งหมดในแต่ละ Floor → ขึ้น Floor ถัดไป</div>
-            <div class="htp-row">ระหว่างทางพบ <b>Shop / Rest / Treasure / Mystery</b> ได้</div>
-            <div class="htp-row">ตายแล้วเริ่มใหม่ตั้งแต่ต้น — <b>Roguelike</b></div>
-          </div>
+      <!-- ── Left: COMBAT ──────────────────────────────────── -->
+      <div class="htp-section menu-side-card">
+        <div class="htp-heading">⚔ COMBAT</div>
+        <div class="htp-rows">
+          <div class="htp-row"><span class="htp-badge dmg">DAGGER</span> ฟัน + สร้าง Posture damage แก่ศัตรู</div>
+          <div class="htp-row"><span class="htp-badge par">PARRY</span> Parry ทันช่วง <b>TELL</b> (กะพริบแดง) → counter + Posture สูง</div>
+          <div class="htp-row"><span class="htp-badge blk">BLOCK</span> รับดาเมจลดลง แต่สะสม Posture ตัวเอง</div>
+          <div class="htp-row"><span class="htp-badge dsh">DASH</span> พุ่งทะลุศัตรู — หลบหรือจัดตำแหน่ง</div>
         </div>
       </div>
-      <!-- ─────────────────────────────────────────────────── -->
 
-      <div id="menu-controls-hint">
-        <p><kbd>WASD</kbd> Move &nbsp;|&nbsp; <kbd>L-Click</kbd> Dagger &nbsp;|&nbsp; <kbd>R-Click</kbd> Tap: Parry / Hold: Block &nbsp;|&nbsp; <kbd>Space</kbd> Dash</p>
+      <!-- ── Center: Title + Buttons ───────────────────────── -->
+      <div id="menu-center">
+        <h1 id="game-title">PARRY<br /><span>DEPTH</span></h1>
+        <p id="game-subtitle">read the tell. parry. backstab.</p>
+        <div id="menu-buttons">
+          <button id="btn-start-run" class="btn-primary">▶ START RUN</button>
+          <button id="btn-continue-run" class="btn-secondary hidden">◈ CONTINUE RUN</button>
+          <button id="btn-abandon-run" class="btn-danger hidden">✕ ABANDON SAVED RUN</button>
+        </div>
       </div>
 
-      <div id="menu-buttons">
-        <button id="btn-start-run" class="btn-primary">▶ START RUN</button>
-        <button id="btn-continue-run" class="btn-secondary hidden">◈ CONTINUE RUN</button>
-        <button id="btn-abandon-run" class="btn-danger hidden">✕ ABANDON SAVED RUN</button>
+      <!-- ── Right: POSTURE & DEATHBLOW ────────────────────── -->
+      <div class="htp-section menu-side-card">
+        <div class="htp-heading">⚡ POSTURE &amp; DEATHBLOW</div>
+        <div class="htp-rows">
+          <div class="htp-row">ทุกตีและทุก Parry เพิ่มแถบ <b>POSTURE ⚡</b> ของศัตรู</div>
+          <div class="htp-row">Posture เต็ม → ศัตรู <b>stagger</b> 4 วินาที</div>
+          <div class="htp-row">ขณะ stagger จุดแดง <b>●</b> ขึ้น → <b>L-Click = DEATHBLOW</b> (ตายทันที)</div>
+          <div class="htp-row">Posture ของ <b>ตัวเอง</b> เต็ม → เราหยุดชะงักแทน!</div>
+        </div>
       </div>
+
     </div>
   </div>
 
